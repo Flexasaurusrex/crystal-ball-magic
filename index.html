@@ -1,27 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crystal Ball</title>
     <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#4C1D95"}}}' />
 </head>
-<body style="margin:0;padding:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-family:Arial;text-align:center;min-height:100vh;">
-    <h1>🔮 Crystal Ball</h1>
-    <p>Mini App is working!</p>
-    <button onclick="test()" style="padding:15px 30px;background:#7C3AED;border:none;border-radius:10px;color:white;font-size:18px;cursor:pointer;">🔮 Test Button</button>
-    
-    <script>
-        function test() {
-            alert('🎉 IT WORKS! Mini App is functional!');
-        }
-        
-        // Signal ready to parent frame
-        if (window.parent) {
-            window.parent.postMessage({type: 'frame_ready'}, '*');
-        }
-        
-        console.log('✅ Mini App loaded successfully!');
-    </script>
+<body>
+    <h1>HELLO WORLD</h1>
+    <p>Can you see this text?</p>
 </body>
 </html>
