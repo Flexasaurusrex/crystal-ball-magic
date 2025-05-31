@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjAsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIn0",
+    "payload": "eyJkb21haW4iOiJjcnlzdGFsLWJhbGwtbWFnaWMudmVyY2VsLmFwcCJ9",
+    "signature": "MHgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Magic Crystal Ball",
+    "iconUrl": "https://crystal-ball-magic.vercel.app/icon.png",
+    "homeUrl": "https://crystal-ball-magic.vercel.app/",
+    "imageUrl": "https://crystal-ball-magic.vercel.app/preview.png",
+    "buttonTitle": "🔮 Ask the Crystal Ball",
+    "splashImageUrl": "https://crystal-ball-magic.vercel.app/icon.png",
+    "splashBackgroundColor": "#4C1D95"
+  }
+}
