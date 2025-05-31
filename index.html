@@ -1,58 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔮 Magic Crystal Ball</title>
+    <title>Crystal Ball</title>
     <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#4C1D95"}}}' />
 </head>
-<body style="margin:0;padding:0;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-family:Arial;">
-    <div id="root"></div>
-    <script type="module">
-        import { sdk } from "https://unpkg.com/@farcaster/frame-sdk@0.13.0/dist/index.js";
-        
-        async function initApp() {
-            // Wait for SDK
-            await sdk.actions.ready();
-            
-            // Build the app
-            document.getElementById('root').innerHTML = `
-                <div style="text-align:center;padding:20px;min-height:100vh;box-sizing:border-box;">
-                    <h1 style="margin-bottom:20px;font-size:2rem;">🔮 Mystic Crystal Ball</h1>
-                    <p style="margin-bottom:25px;color:#E0E7FF;">Ask any question and discover your fate!</p>
-                    
-                    <div id="crystal-ball" style="width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#A78BFA,#7C3AED,#5B21B6);margin:0 auto 25px;display:flex;align-items:center;justify-content:center;font-size:3rem;cursor:pointer;border:3px solid #C4B5FD;transition:transform 0.3s;" onclick="shakeBall()">🔮</div>
-                    
-                    <input type="text" id="question" placeholder="What do you wish to know?" style="width:80%;padding:12px;border:none;border-radius:20px;background:rgba(255,255,255,0.1);color:white;margin-bottom:15px;font-size:1rem;">
-                    
-                    <button onclick="shakeBall()" style="padding:12px 24px;background:linear-gradient(45deg,#7C3AED,#A78BFA);border:none;border-radius:20px;color:white;font-weight:bold;cursor:pointer;font-size:1rem;display:block;margin:0 auto;">🔮 Ask the Crystal Ball</button>
-                    
-                    <div id="answer" style="margin-top:20px;padding:15px;background:rgba(255,255,255,0.1);border-radius:15px;display:none;"></div>
-                </div>
-            `;
+<body style="margin:0;padding:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-family:Arial;text-align:center;min-height:100vh;">
+    <h1>🔮 Crystal Ball</h1>
+    <p>Mini App is working!</p>
+    <button onclick="test()" style="padding:15px 30px;background:#7C3AED;border:none;border-radius:10px;color:white;font-size:18px;cursor:pointer;">🔮 Test Button</button>
+    
+    <script>
+        function test() {
+            alert('🎉 IT WORKS! Mini App is functional!');
         }
         
-        window.shakeBall = function() {
-            const answers = ["✨ The stars say YES!", "🌙 Ask again when the moon is full...", "🔮 My crystal is cloudy, try later", "⭐ Absolutely! The universe agrees!", "🌟 Signs point to YES!", "💫 Don't count on it...", "🎭 Reply hazy, try again", "🌈 Outlook good!", "🎪 Very doubtful...", "🎨 Without a doubt!"];
-            
-            const q = document.getElementById('question').value.trim();
-            if (!q) { alert('🔮 Ask a question first!'); return; }
-            
-            const ball = document.getElementById('crystal-ball');
-            const answerDiv = document.getElementById('answer');
-            
-            ball.innerHTML = '✨';
-            
-            setTimeout(() => {
-                ball.innerHTML = '🔮';
-                answerDiv.innerHTML = '<h3 style="color:#C4B5FD;margin-bottom:8px;">🔮 The Crystal Ball Reveals:</h3><p style="color:#FDE047;font-weight:bold;font-size:1.1rem;">' + answers[Math.floor(Math.random() * answers.length)] + '</p>';
-                answerDiv.style.display = 'block';
-                document.getElementById('question').value = '';
-            }, 2000);
+        // Signal ready to parent frame
+        if (window.parent) {
+            window.parent.postMessage({type: 'frame_ready'}, '*');
         }
         
-        // Initialize
-        initApp().catch(console.error);
+        console.log('✅ Mini App loaded successfully!');
     </script>
 </body>
 </html>
