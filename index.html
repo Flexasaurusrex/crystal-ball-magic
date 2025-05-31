@@ -6,17 +6,26 @@
     <title>Crystal Ball</title>
     <meta name="fc:frame" content='{"version":"next","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashBackgroundColor":"#4C1D95"}}}' />
 </head>
-<body style="margin:0;padding:50px;background:#ff0000;color:white;font-size:30px;text-align:center;">
-    <h1>🔮 CRYSTAL BALL</h1>
-    <div>SUCCESS! Mini App is rendering!</div>
+<body>
+    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#ff0000;color:white;display:flex;align-items:center;justify-content:center;font-size:40px;z-index:9999;">
+        <div style="text-align:center;">
+            <h1>🔮 IT WORKS!</h1>
+            <p>Mini App Success!</p>
+        </div>
+    </div>
     
     <script>
-        console.log('🎉 We did it!');
+        console.log('🎉 Red screen test!');
         
-        // Signal ready to parent
         if (window.parent) {
             window.parent.postMessage({type: 'frame_ready'}, '*');
         }
+        
+        // Force visibility
+        setTimeout(() => {
+            document.body.style.visibility = 'visible';
+            console.log('🔴 Forced visibility');
+        }, 100);
     </script>
 </body>
 </html>
