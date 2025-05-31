@@ -1,27 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔮 Magic Crystal Ball</title>
-    <meta property="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#4C1D95"}}}' />
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#4C1D95"}}}' />
 </head>
-<body style="margin:0;padding:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-family:Arial;text-align:center;min-height:100vh;box-sizing:border-box;">
-    <h1 style="margin-bottom:20px;font-size:2rem;">🔮 Mystic Crystal Ball</h1>
-    <p style="margin-bottom:25px;color:#E0E7FF;">Ask any question and discover your fate!</p>
-    
-    <div id="crystal-ball" style="width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#A78BFA,#7C3AED,#5B21B6);margin:0 auto 25px;display:flex;align-items:center;justify-content:center;font-size:3rem;cursor:pointer;border:3px solid #C4B5FD;transition:transform 0.3s;" onclick="shakeBall()">🔮</div>
-    
-    <input type="text" id="question" placeholder="What do you wish to know?" style="width:90%;padding:12px;border:none;border-radius:20px;background:rgba(255,255,255,0.1);color:white;margin-bottom:15px;font-size:1rem;">
-    
-    <button onclick="shakeBall()" style="padding:12px 24px;background:linear-gradient(45deg,#7C3AED,#A78BFA);border:none;border-radius:20px;color:white;font-weight:bold;cursor:pointer;font-size:1rem;">🔮 Ask the Crystal Ball</button>
-    
-    <div id="answer" style="margin-top:20px;padding:15px;background:rgba(255,255,255,0.1);border-radius:15px;display:none;"></div>
-
-    <script>
-        const answers = ["✨ The stars say YES!", "🌙 Ask again when the moon is full...", "🔮 My crystal is cloudy, try later", "⭐ Absolutely! The universe agrees!", "🌟 Signs point to YES!", "💫 Don't count on it...", "🎭 Reply hazy, try again", "🌈 Outlook good!", "🎪 Very doubtful...", "🎨 Without a doubt!", "🌺 You may rely on it", "🦄 Better not tell you now", "🔥 All signs point to YES!", "🌊 The tide will turn in your favor"];
+<body style="margin:0;padding:0;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-family:Arial;">
+    <div id="root"></div>
+    <script type="module">
+        import { sdk } from "https://unpkg.com/@farcaster/frame-sdk@0.13.0/dist/index.js";
         
-        function shakeBall() {
+        async function initApp() {
+            // Wait for SDK
+            await sdk.actions.ready();
+            
+            // Build the app
+            document.getElementById('root').innerHTML = `
+                <div style="text-align:center;padding:20px;min-height:100vh;box-sizing:border-box;">
+                    <h1 style="margin-bottom:20px;font-size:2rem;">🔮 Mystic Crystal Ball</h1>
+                    <p style="margin-bottom:25px;color:#E0E7FF;">Ask any question and discover your fate!</p>
+                    
+                    <div id="crystal-ball" style="width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#A78BFA,#7C3AED,#5B21B6);margin:0 auto 25px;display:flex;align-items:center;justify-content:center;font-size:3rem;cursor:pointer;border:3px solid #C4B5FD;transition:transform 0.3s;" onclick="shakeBall()">🔮</div>
+                    
+                    <input type="text" id="question" placeholder="What do you wish to know?" style="width:80%;padding:12px;border:none;border-radius:20px;background:rgba(255,255,255,0.1);color:white;margin-bottom:15px;font-size:1rem;">
+                    
+                    <button onclick="shakeBall()" style="padding:12px 24px;background:linear-gradient(45deg,#7C3AED,#A78BFA);border:none;border-radius:20px;color:white;font-weight:bold;cursor:pointer;font-size:1rem;display:block;margin:0 auto;">🔮 Ask the Crystal Ball</button>
+                    
+                    <div id="answer" style="margin-top:20px;padding:15px;background:rgba(255,255,255,0.1);border-radius:15px;display:none;"></div>
+                </div>
+            `;
+        }
+        
+        window.shakeBall = function() {
+            const answers = ["✨ The stars say YES!", "🌙 Ask again when the moon is full...", "🔮 My crystal is cloudy, try later", "⭐ Absolutely! The universe agrees!", "🌟 Signs point to YES!", "💫 Don't count on it...", "🎭 Reply hazy, try again", "🌈 Outlook good!", "🎪 Very doubtful...", "🎨 Without a doubt!"];
+            
             const q = document.getElementById('question').value.trim();
             if (!q) { alert('🔮 Ask a question first!'); return; }
             
@@ -29,26 +42,17 @@
             const answerDiv = document.getElementById('answer');
             
             ball.innerHTML = '✨';
-            ball.style.animation = 'shake 0.5s infinite';
             
             setTimeout(() => {
                 ball.innerHTML = '🔮';
-                ball.style.animation = '';
                 answerDiv.innerHTML = '<h3 style="color:#C4B5FD;margin-bottom:8px;">🔮 The Crystal Ball Reveals:</h3><p style="color:#FDE047;font-weight:bold;font-size:1.1rem;">' + answers[Math.floor(Math.random() * answers.length)] + '</p>';
                 answerDiv.style.display = 'block';
                 document.getElementById('question').value = '';
             }, 2000);
         }
         
-        document.addEventListener('keypress', e => { if (e.key === 'Enter') shakeBall(); });
-        console.log('🔮 Ultra-clean crystal ball loaded!');
+        // Initialize
+        initApp().catch(console.error);
     </script>
-    
-    <style>
-        @keyframes shake { 0%,100% { transform:translateX(0); } 25% { transform:translateX(-5px); } 75% { transform:translateX(5px); } }
-        input::placeholder { color:#C4B5FD; }
-        input:focus { outline:none; background:rgba(255,255,255,0.15); }
-        button:hover { transform:translateY(-2px); }
-    </style>
 </body>
 </html>
