@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#4C1D95"}}}' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Ball</title>
+    <meta name="fc:frame" content='{"version":"next","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashBackgroundColor":"#4C1D95"}}}' />
 </head>
 <body style="margin:0;padding:50px;background:#ff0000;color:white;font-size:30px;text-align:center;">
-    <h1>CRYSTAL BALL TEST</h1>
-    <div id="status">Loading...</div>
+    <h1>🔮 CRYSTAL BALL</h1>
+    <div>SUCCESS! Mini App is rendering!</div>
     
     <script>
-        document.getElementById('status').innerHTML = 'JavaScript Running!';
+        console.log('🎉 We did it!');
         
-        // Multiple ready signals
-        setTimeout(() => {
-            if (window.parent) {
-                window.parent.postMessage({type: 'frame_ready'}, '*');
-                window.parent.postMessage('frame_ready', '*');
-            }
-            document.getElementById('status').innerHTML = 'Ready Signal Sent!';
-        }, 100);
-        
-        console.log('🔴 RED BACKGROUND TEST');
+        // Signal ready to parent
+        if (window.parent) {
+            window.parent.postMessage({type: 'frame_ready'}, '*');
+        }
     </script>
 </body>
 </html>
