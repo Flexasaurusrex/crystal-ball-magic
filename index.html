@@ -4,28 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crystal Ball</title>
-    <meta name="fc:frame" content='{"version":"next","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashBackgroundColor":"#4C1D95"}}}' />
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashBackgroundColor":"#4C1D95"}}}' />
 </head>
 <body>
-    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#ff0000;color:white;display:flex;align-items:center;justify-content:center;font-size:40px;z-index:9999;">
+    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#ff0000;color:white;display:flex;align-items:center;justify-content:center;font-size:40px;z-index:9999;font-family:Arial;">
         <div style="text-align:center;">
             <h1>🔮 IT WORKS!</h1>
             <p>Mini App Success!</p>
+            <button onclick="alert('Button works!')" style="padding:20px;background:#7C3AED;border:none;border-radius:10px;color:white;font-size:20px;margin-top:20px;">Test Button</button>
         </div>
     </div>
     
     <script>
-        console.log('🎉 Red screen test!');
+        console.log('🎉 Red screen with preview test!');
         
         if (window.parent) {
             window.parent.postMessage({type: 'frame_ready'}, '*');
         }
-        
-        // Force visibility
-        setTimeout(() => {
-            document.body.style.visibility = 'visible';
-            console.log('🔴 Forced visibility');
-        }, 100);
     </script>
 </body>
 </html>
