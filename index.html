@@ -6,7 +6,9 @@
     <title>🔮 Magic Crystal Ball</title>
     
     <!-- Farcaster Mini App Meta Tags -->
-    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://i.imgur.com/crystal-ball-preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://your-app.vercel.app/","splashImageUrl":"https://i.imgur.com/crystal-ball-icon.png","splashBackgroundColor":"#4C1D95"}}}' />
+    <meta property="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#4C1D95"}}}' />
+    <meta property="og:image" content="https://crystal-ball-magic.vercel.app/preview.png" />
+    <meta property="fc:frame:image" content="https://crystal-ball-magic.vercel.app/preview.png" />
     
     <style>
         * {
@@ -161,9 +163,44 @@
             color: #A78BFA;
             font-style: italic;
         }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-screen.hidden {
+            display: none;
+        }
+
+        .spinner {
+            font-size: 4rem;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner">🔮</div>
+        <h2>Loading your mystical experience...</h2>
+        <p>Connecting to the cosmic forces...</p>
+    </div>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -208,7 +245,7 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
         // Magic answers our crystal ball can give!
         const magicAnswers = [
             "✨ The stars say YES!",
@@ -233,7 +270,32 @@
             "🎈 Let your dreams take flight!"
         ];
 
-        function shakeCrystalBall() {
+        let isSDKLoaded = false;
+        let sdk = null;
+
+        // Initialize the Mini App
+        async function initMiniApp() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            
+            try {
+                // Try to import Farcaster SDK
+                const module = await import('https://unpkg.com/@farcaster/frame-sdk@0.1.0/dist/sdk.js');
+                sdk = module.sdk;
+                
+                // Signal that we're ready
+                await sdk.actions.ready();
+                console.log('🔮 Crystal Ball Mini App loaded with SDK!');
+                isSDKLoaded = true;
+            } catch (error) {
+                console.log('🔮 Running as standalone web app (not in Farcaster)');
+                // App still works as regular web page
+            }
+            
+            // Hide loading screen
+            loadingScreen.classList.add('hidden');
+        }
+
+        window.shakeCrystalBall = function() {
             const questionInput = document.getElementById('questionInput');
             const question = questionInput.value.trim();
             
@@ -280,17 +342,14 @@
             }, 2000);
         }
 
-        function handleKeyPress(event) {
+        window.handleKeyPress = function(event) {
             if (event.key === 'Enter') {
                 shakeCrystalBall();
             }
         }
 
-        // Simulate Farcaster SDK ready (for demo purposes)
-        console.log('🔮 Crystal Ball Mini App loaded!');
-        
-        // In a real Farcaster Mini App, you'd call:
-        // sdk.actions.ready();
+        // Initialize when page loads
+        window.addEventListener('load', initMiniApp);
     </script>
 </body>
 </html>
