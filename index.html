@@ -2,41 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔮 Magic Crystal Ball</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Magic Crystal Ball</title>
     
     <!-- Farcaster Mini App Meta Tags -->
-    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/"}}}' />
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/"}}}' />
     
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
             color: white;
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            position: relative;
+            min-height: 100vh;
         }
         
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
+        .app-container {
+            width: 100%;
+            min-height: 100vh;
             padding: 20px;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
         }
         
         .header {
+            text-align: center;
             margin-bottom: 30px;
+            margin-top: 20px;
         }
         
         .header h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
@@ -47,25 +59,20 @@
         }
         
         .crystal-ball {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #A78BFA, #7C3AED, #5B21B6);
-            margin: 0 auto 40px auto;
+            margin: 0 auto 30px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
+            font-size: 3rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             border: 3px solid #C4B5FD;
-            position: relative;
-        }
-        
-        .crystal-ball:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            user-select: none;
         }
         
         .crystal-ball:active {
@@ -77,9 +84,15 @@
         }
         
         @keyframes shake {
-            0%, 100% { transform: translateX(0) rotate(0deg); }
-            25% { transform: translateX(-3px) rotate(-0.5deg); }
-            75% { transform: translateX(3px) rotate(0.5deg); }
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+        
+        .input-container {
+            width: 100%;
+            max-width: 350px;
+            margin-bottom: 20px;
         }
         
         .question-input {
@@ -90,8 +103,6 @@
             background: rgba(255,255,255,0.15);
             color: white;
             font-size: 1rem;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
             border: 2px solid rgba(255,255,255,0.2);
             transition: all 0.3s ease;
         }
@@ -104,7 +115,6 @@
             outline: none;
             border-color: #A78BFA;
             background: rgba(255,255,255,0.2);
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
         }
         
         .shake-button {
@@ -117,18 +127,13 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
-        }
-        
-        .shake-button:hover {
-            background: linear-gradient(45deg, #6D28D9, #8B5CF6);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            user-select: none;
         }
         
         .shake-button:active {
-            transform: translateY(0px);
+            transform: scale(0.98);
         }
         
         .shake-button:disabled {
@@ -137,16 +142,27 @@
             transform: none;
         }
         
+        .loading {
+            display: none;
+            color: #A78BFA;
+            font-style: italic;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
         .answer-container {
             background: rgba(255,255,255,0.15);
             border-radius: 20px;
             padding: 25px;
             margin-top: 20px;
-            backdrop-filter: blur(10px);
             border: 2px solid rgba(255,255,255,0.2);
             transform: translateY(20px);
             opacity: 0;
             transition: all 0.5s ease;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
         }
         
         .answer-container.show {
@@ -172,43 +188,24 @@
             color: #C4B5FD;
             font-size: 0.9rem;
             line-height: 1.4;
+            text-align: center;
+            max-width: 300px;
         }
         
-        .loading {
-            display: none;
-            color: #A78BFA;
-            font-style: italic;
-            font-size: 1.1rem;
-            margin: 20px 0;
-        }
-
-        .sparkle {
-            position: absolute;
-            color: #FDE047;
-            font-size: 1rem;
-            animation: sparkle 2s infinite;
-            pointer-events: none;
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
-        }
-
         /* Mobile optimizations */
         @media (max-width: 480px) {
-            .container {
+            .app-container {
                 padding: 15px;
             }
             
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .crystal-ball {
-                width: 160px;
-                height: 160px;
-                font-size: 3rem;
+                width: 140px;
+                height: 140px;
+                font-size: 2.5rem;
             }
             
             .answer-container p {
@@ -218,26 +215,27 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <div class="header">
             <h1>🔮 Mystic Crystal Ball</h1>
             <p>Ask any question and discover your fate!</p>
         </div>
 
-        <div class="crystal-ball" id="crystalBall" onclick="shakeCrystalBall()">
+        <div class="crystal-ball" id="crystalBall">
             🔮
         </div>
 
-        <input 
-            type="text" 
-            id="questionInput" 
-            class="question-input" 
-            placeholder="What do you wish to know?"
-            onkeypress="handleKeyPress(event)"
-            autocomplete="off"
-        >
+        <div class="input-container">
+            <input 
+                type="text" 
+                id="questionInput" 
+                class="question-input" 
+                placeholder="What do you wish to know?"
+                autocomplete="off"
+            >
+        </div>
 
-        <button class="shake-button" id="shakeButton" onclick="shakeCrystalBall()">
+        <button class="shake-button" id="shakeButton">
             🔮 Shake the Crystal Ball
         </button>
 
@@ -257,6 +255,8 @@
     </div>
 
     <script>
+        console.log('🔮 Crystal Ball starting...');
+
         // Magic answers our crystal ball can give!
         const magicAnswers = [
             "✨ The stars say YES!",
@@ -286,59 +286,31 @@
             "🔮 Crystal clear: YES!"
         ];
 
-        // Simplified SDK handling for Farcaster environment
         let isInFarcaster = false;
 
-        function detectFarcasterEnvironment() {
+        function detectEnvironment() {
             try {
-                // Check if we're in Farcaster
                 const userAgent = navigator.userAgent.toLowerCase();
-                const isWarpcast = userAgent.includes('warpcast') || 
-                                 userAgent.includes('farcaster') ||
-                                 window.location.href.includes('warpcast') ||
-                                 window.parent !== window;
+                isInFarcaster = userAgent.includes('warpcast') || 
+                               userAgent.includes('farcaster') ||
+                               window.parent !== window;
                 
-                isInFarcaster = isWarpcast;
-                console.log('🔮 Farcaster environment detected:', isInFarcaster);
-                
-                if (isInFarcaster) {
-                    // Notify parent that we're ready
-                    try {
-                        window.parent.postMessage({
-                            type: 'frame_ready',
-                            source: 'crystal-ball'
-                        }, '*');
-                    } catch (e) {
-                        console.log('🔮 Parent messaging not available');
-                    }
-                }
+                console.log('🔮 Environment - Farcaster:', isInFarcaster);
+                console.log('🔮 User Agent:', userAgent);
             } catch (error) {
                 console.log('🔮 Environment detection error:', error);
             }
         }
 
-        function createSparkle(x, y) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.textContent = '✨';
-            sparkle.style.left = x + 'px';
-            sparkle.style.top = y + 'px';
-            document.body.appendChild(sparkle);
-            
-            setTimeout(() => {
-                if (sparkle.parentNode) {
-                    sparkle.parentNode.removeChild(sparkle);
-                }
-            }, 2000);
-        }
-
         function shakeCrystalBall() {
+            console.log('🔮 Shake button clicked');
+            
             const questionInput = document.getElementById('questionInput');
             const question = questionInput.value.trim();
             
             if (!question) {
                 questionInput.focus();
-                questionInput.placeholder = "✨ Please ask the crystal ball a question first!";
+                questionInput.placeholder = "✨ Please ask a question first!";
                 setTimeout(() => {
                     questionInput.placeholder = "What do you wish to know?";
                 }, 2000);
@@ -351,56 +323,32 @@
             const answerContainer = document.getElementById('answerContainer');
             const answerElement = document.getElementById('answer');
 
-            // Start shaking animation
+            // Start animation
             crystalBall.classList.add('shaking');
-            crystalBall.innerHTML = '✨';
+            crystalBall.textContent = '✨';
             shakeButton.disabled = true;
             shakeButton.textContent = '✨ Consulting the spirits...';
             loading.style.display = 'block';
             answerContainer.classList.remove('show');
 
-            // Add sparkle effects
-            const rect = crystalBall.getBoundingClientRect();
-            createSparkle(rect.left + rect.width / 2 - 10, rect.top + rect.height / 2);
-            
+            // Show answer after 2 seconds
             setTimeout(() => {
-                createSparkle(rect.left + rect.width / 3, rect.top + rect.height / 3);
-            }, 300);
-
-            // Shake for 2 seconds, then reveal answer
-            setTimeout(() => {
-                // Stop shaking
                 crystalBall.classList.remove('shaking');
-                crystalBall.innerHTML = '🔮';
+                crystalBall.textContent = '🔮';
                 
-                // Get random answer
                 const randomAnswer = magicAnswers[Math.floor(Math.random() * magicAnswers.length)];
                 answerElement.textContent = randomAnswer;
                 
-                // Show answer with animation
                 answerContainer.classList.add('show');
                 loading.style.display = 'none';
                 
-                // Reset button
                 shakeButton.disabled = false;
                 shakeButton.textContent = '🔮 Ask Another Question';
                 
-                // Clear input for next question
                 questionInput.value = '';
                 questionInput.placeholder = "What else would you like to know?";
 
-                // Notify Farcaster if in that environment
-                if (isInFarcaster) {
-                    try {
-                        window.parent.postMessage({
-                            type: 'crystal_ball_answer',
-                            question: question,
-                            answer: randomAnswer
-                        }, '*');
-                    } catch (e) {
-                        console.log('🔮 Could not notify parent');
-                    }
-                }
+                console.log('🔮 Answer revealed:', randomAnswer);
             }, 2000);
         }
 
@@ -411,38 +359,43 @@
             }
         }
 
-        // Handle messages from parent frame
-        window.addEventListener('message', function(event) {
-            try {
-                if (event.data && event.data.type === 'frame_init') {
-                    console.log('🔮 Received frame init from parent');
-                    isInFarcaster = true;
-                }
-            } catch (e) {
-                console.log('🔮 Message handling error:', e);
-            }
-        });
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🔮 Crystal Ball Mini App loaded!');
-            detectFarcasterEnvironment();
+        // Initialize app
+        function initApp() {
+            console.log('🔮 Initializing app...');
             
-            // Focus input for better UX
-            setTimeout(() => {
-                const input = document.getElementById('questionInput');
-                if (input && !('ontouchstart' in window)) {
-                    input.focus();
-                }
-            }, 500);
-        });
-
-        // Handle visibility changes (important for mini apps)
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                console.log('🔮 App became visible');
+            detectEnvironment();
+            
+            // Add event listeners
+            const crystalBall = document.getElementById('crystalBall');
+            const shakeButton = document.getElementById('shakeButton');
+            const questionInput = document.getElementById('questionInput');
+            
+            if (crystalBall) {
+                crystalBall.addEventListener('click', shakeCrystalBall);
+                console.log('🔮 Crystal ball click listener added');
             }
-        });
+            
+            if (shakeButton) {
+                shakeButton.addEventListener('click', shakeCrystalBall);
+                console.log('🔮 Shake button click listener added');
+            }
+            
+            if (questionInput) {
+                questionInput.addEventListener('keypress', handleKeyPress);
+                console.log('🔮 Input keypress listener added');
+            }
+            
+            console.log('🔮 App initialized successfully!');
+        }
+
+        // Start when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+
+        console.log('🔮 Script loaded');
     </script>
 </body>
 </html>
