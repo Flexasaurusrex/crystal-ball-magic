@@ -183,8 +183,8 @@ ${randomTagline}
       if (_sdk && _sdk.actions && _sdk.actions.openUrl) {
         const warpcastUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}`;
         await _sdk.actions.openUrl(warpcastUrl);
-        setShareStatus('✨ Opening cast composer...');
-        setTimeout(() => setShareStatus(''), 3000);
+        setShareStatus('✨ Cast opened! Hit ENTER once to show frame preview');
+        setTimeout(() => setShareStatus(''), 5000);
         return;
       }
 
@@ -193,8 +193,8 @@ ${randomTagline}
       const newWindow = window.open(warpcastUrl, '_blank', 'width=600,height=700,scrollbars=yes,resizable=yes');
       
       if (newWindow) {
-        setShareStatus('✨ Opening cast composer...');
-        setTimeout(() => setShareStatus(''), 3000);
+        setShareStatus('✨ Cast opened! Hit ENTER once to show frame preview');
+        setTimeout(() => setShareStatus(''), 5000);
       } else {
         // If popup was blocked, copy to clipboard as final fallback
         await navigator.clipboard.writeText(shareText);
