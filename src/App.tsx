@@ -170,7 +170,7 @@ Question: "${currentQuestion}"
 Answer: ${answer}
 
 Ask your own question:
-https://crystal-ball-magic.vercel.app
+https://crystal-ball-magic.vercel.app 
 
 ${randomTagline}`;
 
