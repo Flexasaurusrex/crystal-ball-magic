@@ -8,8 +8,22 @@
     <!-- Farcaster Mini App Meta Tags -->
     <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/splash.png","splashBackgroundColor":"#4C1D95"}}}' />
     
-    <!-- Load Farcaster SDK -->
-    <script src="https://unpkg.com/@farcaster/frame-sdk@latest/dist/index.js"></script>
+    <!-- Load Farcaster SDK as Module -->
+    <script type="module">
+      import { default as FrameSDK } from 'https://unpkg.com/@farcaster/frame-sdk@latest/dist/index.js';
+      
+      window.FrameSDK = FrameSDK;
+      
+      // Initialize immediately
+      try {
+        const sdk = new FrameSDK();
+        await sdk.actions.ready();
+        console.log('🔮 SDK loaded and ready!');
+        window.farcasterSDK = sdk;
+      } catch (error) {
+        console.log('🔮 SDK initialization failed:', error);
+      }
+    </script>
     
     <style>
         * {
@@ -205,9 +219,6 @@
     </div>
 
     <script>
-        // Farcaster SDK Integration
-        let sdk = null;
-        
         // Magic answers our crystal ball can give!
         const magicAnswers = [
             "✨ The stars say YES!",
@@ -231,36 +242,6 @@
             "🌺 Bloom where you are planted",
             "🎈 Let your dreams take flight!"
         ];
-
-        // Initialize SDK safely
-        function initSDK() {
-            try {
-                // Check if Farcaster SDK is available
-                if (typeof FrameSDK !== 'undefined') {
-                    sdk = new FrameSDK();
-                    
-                    // Signal that the app is ready (this hides the splash screen)
-                    sdk.actions.ready().then(() => {
-                        console.log('🔮 Farcaster SDK initialized successfully!');
-                    }).catch((error) => {
-                        console.log('🔮 SDK ready() failed:', error);
-                    });
-                } else {
-                    console.log('🔮 SDK not available, running in standalone mode');
-                    // Call ready anyway in case we're in a Mini App
-                    setTimeout(() => {
-                        if (window.parent !== window && window.parent.postMessage) {
-                            window.parent.postMessage({ type: 'frame_ready' }, '*');
-                        }
-                    }, 100);
-                }
-            } catch (error) {
-                console.log('🔮 SDK initialization error:', error);
-            }
-            
-            // App is ready regardless of SDK status
-            console.log('🔮 Crystal Ball Mini App loaded!');
-        }
 
         function shakeCrystalBall() {
             const questionInput = document.getElementById('questionInput');
@@ -317,13 +298,7 @@
 
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', () => {
-            // Give the SDK script time to load
-            setTimeout(initSDK, 100);
-        });
-
-        // Backup initialization
-        window.addEventListener('load', () => {
-            setTimeout(initSDK, 200);
+            console.log('🔮 Crystal Ball Mini App loaded!');
         });
     </script>
 </body>
