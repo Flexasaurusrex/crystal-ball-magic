@@ -170,9 +170,13 @@ Question: "${currentQuestion}"
 Answer: ${answer}
 
 Ask your own question:
-https://crystal-ball-magic.vercel.app 
+https://crystal-ball-magic.vercel.app
 
-${randomTagline}`;
+${randomTagline}
+
+
+
+`;
 
     try {
       // First, try using the Farcaster SDK to open cast composer
