@@ -37,8 +37,9 @@ const App = () => {
       try {
         console.log('🔮 Loading Farcaster SDK...');
         
-        // Use dynamic import with proper typing
-        const sdkModule = await import('https://esm.sh/@farcaster/frame-sdk@latest') as any;
+        // Use eval to avoid TypeScript compilation issues
+        const importSdk = new Function('return import("https://esm.sh/@farcaster/frame-sdk@latest")');
+        const sdkModule = await importSdk();
         const sdk = sdkModule.sdk;
         
         console.log('🔮 Farcaster SDK loaded successfully');
@@ -49,7 +50,7 @@ const App = () => {
       } catch (error) {
         console.log('🔮 Farcaster SDK not available:', error);
         
-        // Fallback for iframe
+        // Fallback: Try postMessage if in iframe
         try {
           if (window.parent !== window) {
             window.parent.postMessage({ type: 'frame_ready' }, '*');
