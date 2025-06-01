@@ -7,6 +7,7 @@ const App = () => {
   const [isShaking, setIsShaking] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const [_sdk, setSdk] = useState<any>(null); // Prefixed with _ to indicate intentionally unused
+  const [shareStatus, setShareStatus] = useState('');
 
   const magicAnswers = [
     // POSITIVE RESPONSES ✅
@@ -135,13 +136,15 @@ const App = () => {
 
   const shakeCrystalBall = () => {
     if (!question.trim()) {
-      alert('🔮 Ask the crystal ball a question first!');
+      setShareStatus('🔮 Ask the crystal ball a question first!');
+      setTimeout(() => setShareStatus(''), 3000);
       return;
     }
 
     setCurrentQuestion(question); // Save the question
     setIsShaking(true);
     setShowAnswer(false);
+    setShareStatus(''); // Clear any previous status
 
     setTimeout(() => {
       const randomAnswer = magicAnswers[Math.floor(Math.random() * magicAnswers.length)];
@@ -162,9 +165,19 @@ Ask your own question: https://crystal-ball-magic.vercel.app`;
 
     try {
       await navigator.clipboard.writeText(shareText);
-      alert('🔮 Reading copied! Paste it in a new cast and the beautiful frame will appear automatically.');
+      setShareStatus('✅ Copied! Paste in a new cast');
+      setTimeout(() => setShareStatus(''), 3000);
     } catch (error) {
-      prompt('🔮 Copy this text and paste it in a new cast:', shareText);
+      // Fallback for when clipboard API isn't available
+      setShareStatus('📋 Copy this text to share your reading:');
+      // Create a temporary textarea to select the text
+      const textarea = document.createElement('textarea');
+      textarea.value = shareText;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setTimeout(() => setShareStatus(''), 5000);
     }
   };
 
@@ -173,6 +186,7 @@ Ask your own question: https://crystal-ball-magic.vercel.app`;
     setCurrentQuestion('');
     setAnswer('');
     setQuestion('');
+    setShareStatus(''); // Clear status messages
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -238,6 +252,22 @@ Ask your own question: https://crystal-ball-magic.vercel.app`;
             <h4 style={{ color: '#C4B5FD', marginBottom: '8px', fontSize: '0.9rem' }}>Your Question:</h4>
             <p style={{ fontSize: '1.1rem', fontStyle: 'italic', color: '#E0E7FF' }}>
               "{currentQuestion}"
+            </p>
+          </div>
+        )}
+
+        {/* Status Messages */}
+        {shareStatus && (
+          <div style={{
+            background: shareStatus.includes('✅') ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+            borderRadius: '15px',
+            padding: '15px',
+            marginBottom: '20px',
+            border: shareStatus.includes('✅') ? '2px solid rgba(34, 197, 94, 0.4)' : '2px solid rgba(239, 68, 68, 0.4)',
+            color: shareStatus.includes('✅') ? '#BBF7D0' : '#FECACA'
+          }}>
+            <p style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+              {shareStatus}
             </p>
           </div>
         )}
