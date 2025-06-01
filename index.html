@@ -8,6 +8,9 @@
     <!-- Farcaster Mini App Meta Tags -->
     <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/splash.png","splashBackgroundColor":"#4C1D95"}}}' />
     
+    <!-- Load Farcaster SDK -->
+    <script src="https://unpkg.com/@farcaster/frame-sdk@latest/dist/index.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -165,18 +168,15 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>🔮 Mystic Crystal Ball</h1>
             <p>Ask any question and discover your fate!</p>
         </div>
 
-        <!-- Crystal Ball -->
         <div class="crystal-ball" id="crystalBall" onclick="shakeCrystalBall()">
             🔮
         </div>
 
-        <!-- Question Input -->
         <input 
             type="text" 
             id="questionInput" 
@@ -185,23 +185,19 @@
             onkeypress="handleKeyPress(event)"
         >
 
-        <!-- Shake Button -->
         <button class="shake-button" id="shakeButton" onclick="shakeCrystalBall()">
             🔮 Shake the Crystal Ball
         </button>
 
-        <!-- Loading Message -->
         <div class="loading" id="loading">
             ✨ Consulting the spirits...
         </div>
 
-        <!-- Answer Display -->
         <div class="answer-container" id="answerContainer">
             <h3>The Crystal Ball Reveals:</h3>
             <p id="answer"></p>
         </div>
 
-        <!-- Instructions -->
         <div class="instructions">
             <p>💫 Type your question above and click the crystal ball!</p>
             <p>🌟 The mystical forces will guide your destiny</p>
@@ -209,30 +205,9 @@
     </div>
 
     <script>
-        // Import Farcaster SDK
-        let sdk;
+        // Farcaster SDK Integration
+        let sdk = null;
         
-        // Initialize SDK when available
-        async function initSDK() {
-            try {
-                // Import the SDK (in production, you'd install via npm)
-                const { default: FrameSDK } = await import('https://unpkg.com/@farcaster/frame-sdk@latest/dist/index.js');
-                sdk = new FrameSDK();
-                
-                // Add event listeners
-                sdk.on('primaryButtonClicked', () => {
-                    console.log('Primary button clicked');
-                });
-                
-                // Signal that the app is ready
-                sdk.actions.ready();
-                console.log('🔮 Farcaster SDK initialized and ready!');
-            } catch (error) {
-                console.log('🔮 Running without Farcaster SDK (standalone mode)');
-                // App still works without SDK for testing
-            }
-        }
-
         // Magic answers our crystal ball can give!
         const magicAnswers = [
             "✨ The stars say YES!",
@@ -256,6 +231,36 @@
             "🌺 Bloom where you are planted",
             "🎈 Let your dreams take flight!"
         ];
+
+        // Initialize SDK safely
+        function initSDK() {
+            try {
+                // Check if Farcaster SDK is available
+                if (typeof FrameSDK !== 'undefined') {
+                    sdk = new FrameSDK();
+                    
+                    // Signal that the app is ready (this hides the splash screen)
+                    sdk.actions.ready().then(() => {
+                        console.log('🔮 Farcaster SDK initialized successfully!');
+                    }).catch((error) => {
+                        console.log('🔮 SDK ready() failed:', error);
+                    });
+                } else {
+                    console.log('🔮 SDK not available, running in standalone mode');
+                    // Call ready anyway in case we're in a Mini App
+                    setTimeout(() => {
+                        if (window.parent !== window && window.parent.postMessage) {
+                            window.parent.postMessage({ type: 'frame_ready' }, '*');
+                        }
+                    }, 100);
+                }
+            } catch (error) {
+                console.log('🔮 SDK initialization error:', error);
+            }
+            
+            // App is ready regardless of SDK status
+            console.log('🔮 Crystal Ball Mini App loaded!');
+        }
 
         function shakeCrystalBall() {
             const questionInput = document.getElementById('questionInput');
@@ -301,16 +306,6 @@
                 
                 // Clear input for next question
                 questionInput.value = '';
-                
-                // Analytics: Track successful predictions (if SDK available)
-                if (sdk) {
-                    try {
-                        // You could use sdk.actions.openUrl() or other actions here
-                        console.log('🔮 Prediction delivered via Farcaster Mini App!');
-                    } catch (error) {
-                        console.log('SDK action failed:', error);
-                    }
-                }
             }, 2000);
         }
 
@@ -321,8 +316,14 @@
         }
 
         // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Give the SDK script time to load
+            setTimeout(initSDK, 100);
+        });
+
+        // Backup initialization
         window.addEventListener('load', () => {
-            initSDK();
+            setTimeout(initSDK, 200);
         });
     </script>
 </body>
