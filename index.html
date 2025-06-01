@@ -202,18 +202,24 @@
     </div>
 
     <script>
-        // Simple Farcaster Mini App ready signal
+        // Correct Farcaster Mini App ready signals
         function notifyFarcasterReady() {
             try {
-                // Standard Mini App ready signal
                 if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({
-                        type: 'frame_ready'
-                    }, '*');
+                    // Try multiple ready signal formats
+                    const signals = [
+                        { type: 'fc_frame_ready' },
+                        { type: 'frameReady' },
+                        { type: 'sdk_ready' },
+                        { type: 'frame_ready' },
+                        { type: 'miniapp_ready' }
+                    ];
                     
-                    window.parent.postMessage({
-                        type: 'ready'
-                    }, '*');
+                    signals.forEach(signal => {
+                        window.parent.postMessage(signal, '*');
+                    });
+                    
+                    console.log('🔮 Sent all ready signals to Farcaster');
                 }
             } catch (e) {
                 console.log('Ready signal failed:', e);
@@ -297,16 +303,18 @@
             }
         }
 
-        // Initialize when page loads
+        // Initialize immediately and repeatedly
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🔮 Crystal Ball Mini App loaded!');
             notifyFarcasterReady();
         });
 
-        // Try ready signal multiple times
+        // Aggressive ready signaling 
+        setTimeout(notifyFarcasterReady, 0);
         setTimeout(notifyFarcasterReady, 100);
         setTimeout(notifyFarcasterReady, 500);
         setTimeout(notifyFarcasterReady, 1000);
+        setTimeout(notifyFarcasterReady, 2000);
     </script>
 </body>
 </html>
