@@ -36,7 +36,11 @@ const App = () => {
     const initializeFarcasterSDK = async () => {
       try {
         console.log('🔮 Loading Farcaster SDK...');
-        const { sdk } = await import('https://esm.sh/@farcaster/frame-sdk@latest');
+        
+        // Use dynamic import with proper typing
+        const sdkModule = await import('https://esm.sh/@farcaster/frame-sdk@latest') as any;
+        const sdk = sdkModule.sdk;
+        
         console.log('🔮 Farcaster SDK loaded successfully');
         
         // Call ready to dismiss splash screen
@@ -141,7 +145,6 @@ const App = () => {
           style={{
             width: '100%',
             padding: '15px',
-            border: 'none',
             borderRadius: '25px',
             background: 'rgba(255,255,255,0.1)',
             color: 'white',
@@ -149,7 +152,8 @@ const App = () => {
             marginBottom: '20px',
             backdropFilter: 'blur(10px)',
             border: '2px solid rgba(255,255,255,0.2)',
-            textAlign: 'center'
+            textAlign: 'center',
+            outline: 'none'
           }}
         />
 
@@ -209,12 +213,11 @@ const App = () => {
           75% { transform: translateX(5px) rotate(1deg); }
         }
         input::placeholder {
-          color: #C4B5FD;
+          color: #C4B5FD !important;
         }
         input:focus {
-          outline: none;
-          border-color: #A78BFA;
-          background: rgba(255,255,255,0.15);
+          border-color: #A78BFA !important;
+          background: rgba(255,255,255,0.15) !important;
         }
       `}</style>
     </div>
