@@ -203,28 +203,21 @@
 
     <!-- Farcaster Frame SDK -->
     <script type="module">
-        // Import the Farcaster SDK
-        let sdk;
-        try {
-            const { sdk: farcasterSdk } = await import('https://unpkg.com/@farcaster/frame-sdk@0.13.12/dist/index.js');
-            sdk = farcasterSdk;
-            console.log('🔮 Farcaster SDK loaded successfully');
-        } catch (error) {
-            console.log('🔮 Farcaster SDK not available (running outside Farcaster):', error);
-        }
-
-        // Initialize the app
+        // Initialize the app with Farcaster SDK
         async function initializeApp() {
             console.log('🔮 Initializing Crystal Ball Mini App...');
             
-            // Hide the splash screen if we're in Farcaster
-            if (sdk) {
-                try {
-                    await sdk.actions.ready();
-                    console.log('🔮 Splash screen dismissed');
-                } catch (error) {
-                    console.log('🔮 Error dismissing splash screen:', error);
-                }
+            let sdk;
+            try {
+                const { sdk: farcasterSdk } = await import('https://unpkg.com/@farcaster/frame-sdk@0.13.12/dist/index.js');
+                sdk = farcasterSdk;
+                console.log('🔮 Farcaster SDK loaded successfully');
+                
+                // Hide the splash screen if we're in Farcaster
+                await sdk.actions.ready();
+                console.log('🔮 Splash screen dismissed');
+            } catch (error) {
+                console.log('🔮 Farcaster SDK not available (running outside Farcaster):', error);
             }
             
             console.log('🔮 Crystal Ball Mini App ready!');
