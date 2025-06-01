@@ -1,10 +1,7 @@
-{}{
-  "frame": {
-    "version": "1",
-    "name": "Magic Crystal Ball",
-    "iconUrl": "https://crystal-ball-magic.vercel.app/icon-1024.png",
-    "homeUrl": "https://crystal-ball-magic.vercel.app/",
-    "splashImageUrl": "https://crystal-ball-magic.vercel.app/splash.png",
-    "splashBackgroundColor": "#4C1D95"
-  }
+{
+"accountAssociation": {
+"header": "eyJmaWQiOjc0MTgsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg5MzEzY2NiNmMyNzk2REVGRTMxNTJGZmZmYmQ3YjM5Mjk2OTBBYmQ5In0",
+"payload": "eyJkb21haW4iOiJjcnlzdGFsLWJhbGwtbWFnaWMudmVyY2VsLmFwcCJ9",
+"signature": "MHg4ZmU2MjMxYmU3ZWQ1YmY1NTU1NDBjMGZlNWRiNDJkZjk1Y2YwMTg2ZjM4ZDMzZmE0ZTBjZGM4YWJhY2NhNzcxNzI5ZDkyYmUxOGNlNzVlOGU5ZDVmODNlNWQzMTQ3ZTJiZjQ4Yzc0ZjQ2MzhiNmViMjkwYmE0YTVmZjMyYjk0YzFj"
+}
 }
