@@ -1,0 +1,10 @@
+{}{
+  "frame": {
+    "version": "1",
+    "name": "Magic Crystal Ball",
+    "iconUrl": "https://crystal-ball-magic.vercel.app/icon-1024.png",
+    "homeUrl": "https://crystal-ball-magic.vercel.app/",
+    "splashImageUrl": "https://crystal-ball-magic.vercel.app/splash.png",
+    "splashBackgroundColor": "#4C1D95"
+  }
+}
