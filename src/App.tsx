@@ -161,41 +161,28 @@ Answer: ${answer}
 Ask your own question: https://crystal-ball-magic.vercel.app`;
 
     try {
-      // Try Farcaster SDK composer first
+      // Always copy to clipboard first
+      await navigator.clipboard.writeText(shareText);
+      
+      // Then try to open composer with just the URL to trigger frame detection
       if (sdk && sdk.actions) {
         try {
-          // Try the composeCast method
+          // Open composer with minimal text to let frame detection work
           await sdk.actions.composeCast({
-            text: shareText
+            text: `🔮 I got: ${answer}\n\nhttps://crystal-ball-magic.vercel.app`
           });
-          console.log('🔮 Opened Farcaster composer with composeCast');
+          console.log('🔮 Opened Farcaster composer');
           return;
         } catch (sdkError) {
-          console.log('🔮 composeCast failed, trying openComposer:', sdkError);
-          
-          // Try alternative method
-          await sdk.actions.openComposer({
-            text: shareText
-          });
-          console.log('🔮 Opened Farcaster composer with openComposer');
-          return;
+          console.log('🔮 SDK composer failed:', sdkError);
         }
       }
       
-      // Fallback: Copy to clipboard
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(shareText);
-        alert('🔮 Reading copied to clipboard! Paste it in a new cast.');
-        console.log('🔮 Copied to clipboard successfully');
-      } else {
-        // Final fallback: show text for manual copying
-        prompt('🔮 Copy this text and paste it in a new cast:', shareText);
-      }
+      // Fallback: Just notify about clipboard
+      alert('🔮 Reading copied to clipboard! Paste it in a new cast to see the frame embed.');
       
     } catch (error) {
-      console.log('🔮 All sharing methods failed:', error);
-      
-      // Ultimate fallback: show the text in a prompt
+      console.log('🔮 Sharing failed:', error);
       prompt('🔮 Copy this text and paste it in a new cast:', shareText);
     }
   };
