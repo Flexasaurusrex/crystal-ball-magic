@@ -1,132 +1,320 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Crystal Ball</title>
+    <title>🔮 Magic Crystal Ball</title>
     
-    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/"}}}' />
+    <!-- Farcaster Mini App Meta Tags -->
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#667eea"}}}' />
     
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 20px;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            color: #E0E7FF;
+            font-size: 1.1rem;
         }
         
         .crystal-ball {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            background: #7C3AED;
-            margin: 20px auto;
+            background: radial-gradient(circle at 30% 30%, #A78BFA, #7C3AED, #5B21B6);
+            margin: 0 auto 40px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 4rem;
             cursor: pointer;
-            border: 3px solid #C4B5FD;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 4px solid #C4B5FD;
         }
         
-        input {
-            width: 80%;
-            padding: 10px;
-            margin: 20px;
+        .crystal-ball:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        
+        .crystal-ball.shaking {
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-1deg); }
+            75% { transform: translateX(5px) rotate(1deg); }
+        }
+        
+        .question-input {
+            width: 100%;
+            padding: 15px;
             border: none;
-            border-radius: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-        
-        button {
-            background: #7C3AED;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
             color: white;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .question-input::placeholder {
+            color: #C4B5FD;
+        }
+        
+        .question-input:focus {
+            outline: none;
+            border-color: #A78BFA;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .shake-button {
+            background: linear-gradient(45deg, #7C3AED, #A78BFA);
             border: none;
-            padding: 15px 25px;
-            border-radius: 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px;
-        }
-        
-        .answer {
-            background: rgba(255,255,255,0.2);
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            font-size: 18px;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1rem;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
         }
         
-        .hidden {
+        .shake-button:hover {
+            background: linear-gradient(45deg, #6D28D9, #8B5CF6);
+            transform: translateY(-2px);
+        }
+        
+        .shake-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .answer-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .answer-container.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .answer-container h3 {
+            color: #C4B5FD;
+            margin-bottom: 10px;
+        }
+        
+        .answer-container p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FDE047;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            color: #C4B5FD;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
             display: none;
+            color: #A78BFA;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <h1>🔮 Magic Crystal Ball</h1>
-    <p>Ask any question and discover your fate!</p>
-    
-    <div class="crystal-ball" onclick="askQuestion()">🔮</div>
-    
-    <input type="text" id="question" placeholder="What do you wish to know?" />
-    
-    <br>
-    
-    <button onclick="askQuestion()">Ask the Crystal Ball</button>
-    
-    <div id="answer" class="answer hidden"></div>
-    
+    <div class="container">
+        <div class="header">
+            <h1>🔮 Mystic Crystal Ball</h1>
+            <p>Ask any question and discover your fate!</p>
+        </div>
+
+        <div class="crystal-ball" id="crystalBall" onclick="shakeCrystalBall()">
+            🔮
+        </div>
+
+        <input 
+            type="text" 
+            id="questionInput" 
+            class="question-input" 
+            placeholder="What do you wish to know?"
+            onkeypress="handleKeyPress(event)"
+        >
+
+        <button class="shake-button" id="shakeButton" onclick="shakeCrystalBall()">
+            🔮 Shake the Crystal Ball
+        </button>
+
+        <div class="loading" id="loading">
+            ✨ Consulting the spirits...
+        </div>
+
+        <div class="answer-container" id="answerContainer">
+            <h3>The Crystal Ball Reveals:</h3>
+            <p id="answer"></p>
+        </div>
+
+        <div class="instructions">
+            <p>💫 Type your question above and click the crystal ball!</p>
+            <p>🌟 The mystical forces will guide your destiny</p>
+        </div>
+    </div>
+
+    <!-- Farcaster Frame SDK -->
+    <script type="module">
+        // Import the Farcaster SDK
+        let sdk;
+        try {
+            const { sdk: farcasterSdk } = await import('https://unpkg.com/@farcaster/frame-sdk@0.13.12/dist/index.js');
+            sdk = farcasterSdk;
+            console.log('🔮 Farcaster SDK loaded successfully');
+        } catch (error) {
+            console.log('🔮 Farcaster SDK not available (running outside Farcaster):', error);
+        }
+
+        // Initialize the app
+        async function initializeApp() {
+            console.log('🔮 Initializing Crystal Ball Mini App...');
+            
+            // Hide the splash screen if we're in Farcaster
+            if (sdk) {
+                try {
+                    await sdk.actions.ready();
+                    console.log('🔮 Splash screen dismissed');
+                } catch (error) {
+                    console.log('🔮 Error dismissing splash screen:', error);
+                }
+            }
+            
+            console.log('🔮 Crystal Ball Mini App ready!');
+        }
+
+        // Wait for DOM to be ready, then initialize
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+
     <script>
-        console.log('Crystal Ball loaded');
-        
-        const answers = [
+        // Magic answers our crystal ball can give!
+        const magicAnswers = [
             "✨ The stars say YES!",
             "🌙 Ask again when the moon is full...",
             "🔮 My crystal is cloudy, try later",
             "⭐ Absolutely! The universe agrees!",
             "🌟 Signs point to YES!",
             "💫 Don't count on it...",
+            "🎭 Reply hazy, try again",
             "🌈 Outlook good!",
             "🎪 Very doubtful...",
             "🎨 Without a doubt!",
+            "🎭 My sources say no",
             "🌺 You may rely on it",
             "🦄 Better not tell you now",
-            "🔥 All signs point to YES!"
+            "🎪 Cannot predict now",
+            "🌸 Concentrate and ask again",
+            "🔥 All signs point to YES!",
+            "🌊 The tide will turn in your favor",
+            "⚡ Electric possibilities ahead!",
+            "🌺 Bloom where you are planted",
+            "🎈 Let your dreams take flight!"
         ];
-        
-        function askQuestion() {
-            console.log('Ask question clicked');
+
+        function shakeCrystalBall() {
+            const questionInput = document.getElementById('questionInput');
+            const question = questionInput.value.trim();
             
-            const questionInput = document.getElementById('question');
-            const answerDiv = document.getElementById('answer');
-            
-            if (!questionInput.value.trim()) {
-                alert('Please ask a question first!');
+            if (!question) {
+                alert('🔮 Ask the crystal ball a question first!');
+                questionInput.focus();
                 return;
             }
-            
-            // Get random answer
-            const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
-            
-            // Show answer
-            answerDiv.textContent = randomAnswer;
-            answerDiv.classList.remove('hidden');
-            
-            // Clear input
-            questionInput.value = '';
-            
-            console.log('Answer shown:', randomAnswer);
+
+            const crystalBall = document.getElementById('crystalBall');
+            const shakeButton = document.getElementById('shakeButton');
+            const loading = document.getElementById('loading');
+            const answerContainer = document.getElementById('answerContainer');
+            const answerElement = document.getElementById('answer');
+
+            // Start shaking animation
+            crystalBall.classList.add('shaking');
+            crystalBall.innerHTML = '✨';
+            shakeButton.disabled = true;
+            shakeButton.textContent = '✨ Consulting the spirits...';
+            loading.style.display = 'block';
+            answerContainer.classList.remove('show');
+
+            // Shake for 2 seconds, then reveal answer
+            setTimeout(() => {
+                // Stop shaking
+                crystalBall.classList.remove('shaking');
+                crystalBall.innerHTML = '🔮';
+                
+                // Get random answer
+                const randomAnswer = magicAnswers[Math.floor(Math.random() * magicAnswers.length)];
+                answerElement.textContent = randomAnswer;
+                
+                // Show answer with animation
+                answerContainer.classList.add('show');
+                loading.style.display = 'none';
+                
+                // Reset button
+                shakeButton.disabled = false;
+                shakeButton.textContent = '🔮 Ask Another Question';
+                
+                // Clear input for next question
+                questionInput.value = '';
+            }, 2000);
         }
-        
-        // Test that DOM is working
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded successfully');
-        });
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                shakeCrystalBall();
+            }
+        }
     </script>
 </body>
 </html>
