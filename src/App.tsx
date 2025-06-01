@@ -161,7 +161,8 @@ const App = () => {
 Question: "${currentQuestion}"
 Answer: ${answer}
 
-Ask your own question: https://crystal-ball-magic.vercel.app`;
+Ask your own question:
+https://crystal-ball-magic.vercel.app`;
 
     try {
       // First, try using the Farcaster SDK to open cast composer
