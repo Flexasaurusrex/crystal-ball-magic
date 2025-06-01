@@ -9,138 +9,96 @@ const App = () => {
   const [sdk, setSdk] = useState<any>(null);
 
   const magicAnswers = [
-    // DAN ROMERO REFERENCES 🎭
-    "📱 Dan Romero already knows the answer",
+    // POSITIVE RESPONSES ✅
+    "📱 Dan Romero already knows the answer - YES",
     "🟣 Dan's purple energy says YES",
-    "📊 Dan would cast about this",
-    "🚀 Dan's building it as we speak",
-    "💡 Dan had this idea 3 years ago",
-    "🎯 Dan's metrics dashboard agrees",
-    
-    // VARUN & TEAM REFERENCES 🛠️
+    "🚀 Dan's building it as we speak - absolutely",
     "⚡ Varun's code says it's possible",
-    "🔧 The devs are shipping it next week",
-    "🧠 Big brain Varun energy detected",
-    "⛓️ Varun's already built the protocol for this",
-    "💻 Varun's GitHub commits confirm",
-    
-    // HORSEFACTS LEGENDS 🐴
-    "🐴 @horsefacts would build this in a weekend",
-    "⚡ Horsefacts energy: maximum efficiency",
-    "🐎 The horse has spoken, and it's based",
-    "💻 Horsefacts-level technical excellence required",
-    "🐴 Even the horses are bullish on this",
-    "⚡ Horsefacts would optimize this question",
-    
-    // LINDA XIE WISDOM 💎
-    "💎 @linda's crystal ball says HODL",
-    "🌟 Linda energy: elegant and powerful",
-    "💫 Linda would turn this into alpha",
-    "✨ Linda vibes are immaculate here",
-    "🦄 Linda-tier question quality",
-    "💎 Linda's gem collection approves",
-    
-    // TED TEAM HUMOR 🎪
+    "🧠 Big brain Varun energy says: definitely",
+    "🐴 @horsefacts would build this in a weekend - YES",
+    "🐎 The horse has spoken: it's based",
+    "💎 @linda's crystal ball says HODL... I mean YES",
+    "🌟 Linda energy detected: elegant and powerful",
     "🎭 @ted's creative genius says YES",
-    "🎨 Ted would make this beautiful",
-    "🌈 Ted's design sense tingles",
-    "🎪 Ted-level creative energy detected",
-    "🎨 Ted would frame this moment",
-    "✨ Ted's aesthetic approval granted",
-    
-    // PRODUCT-MARKET FIT HUMOR 📈
-    "📈 PMF confirmed, you're early",
-    "🎯 Product-market fit? More like perfect-magic fit",
-    "💰 VCs would fund this question",
-    "🚀 This has unicorn potential",
-    "📊 The metrics are looking bullish",
-    "🎪 PMF status: It's giving main character",
-    "💡 Paul Graham would love this pivot",
-    "📈 Hockey stick growth incoming",
-    "💰 Series A worthy insight",
-    
-    // FARCASTER CULTURE 🟣
-    "🟣 Purple pill energy is strong here",
-    "📱 Warpcast notifications going brrrr",
-    "🖼️ Frame this moment literally",
-    "⚡ Faster than Warp speed",
-    "🦄 Rare drop detected",
-    "🎨 Put it in the MoMA of Frames",
-    "🌊 Riding the purple wave",
-    "💎 Diamond FID holder vibes",
-    "🎭 Peak Farcaster native behavior",
-    
-    // BASE CHAIN HUMOR ⛓️
-    "🔵 Based and crystal-pilled",
-    "⛓️ The answer is onchain obviously",
-    "🔵 Base mainnet says YES",
-    "💸 Cheaper than an ETH transaction",
-    "⚡ Lightning fast like Base",
-    "🔵 Jesse Pollak approves this message",
-    "⛓️ Onchain summer vibes",
-    
-    // DEGEN TOKEN REFERENCES 💸
-    "💸 DEGEN allocation incoming",
-    "🎪 Big DEGEN energy",
-    "💰 Time to farm some DEGEN",
-    "🎭 DEGEN worthy question",
-    "💸 The DEGEN gods have spoken",
-    "🎪 Maximum DEGEN coefficient",
-    
-    // COMMUNITY & CHANNELS 📺
-    "📺 Needs its own channel",
-    "🎪 /degentlemen would love this",
-    "🎨 Perfect for /art vibes",
-    "💡 /founders energy detected",
-    "🌟 Main character in /photography",
-    "🎭 Peak /memes material",
-    "🐴 /horsefacts approved content",
-    "💎 /linda wisdom territory",
-    
-    // EARLY ADOPTER HUMOR 🚀
+    "🎨 Ted would make this beautiful - go for it",
+    "📈 PMF confirmed, you're early - YES",
+    "💰 VCs would fund this idea",
+    "🚀 This has unicorn potential - absolutely",
+    "🟣 Purple pill energy confirms: YES",
+    "🔵 Based and crystal-pilled - YES",
+    "💸 DEGEN allocation incoming - YES",
+    "🎪 Big DEGEN energy detected - go for it",
     "🚀 You're so early, time travel confirmed",
-    "⏰ Early bird gets the alpha",
-    "🌅 Dawn of the purple age",
-    "🎯 OG status: UNLOCKED",
-    "👑 Founder mode: ACTIVATED",
-    "🦄 Pre-product-market-fit energy",
-    
-    // TECH & FRAMES 🖼️
+    "👑 Founder mode activated - YES",
     "🖼️ This calls for a Frame within a Frame",
-    "💻 The HubDB has spoken",
-    "🔮 Even my crystal runs on Farcaster",
-    "⚡ Hub sync complete: YES",
-    "🖼️ Frame rate: infinity FPS",
-    "🐴 Horsefacts would optimize this Frame",
+    "💻 The HubDB has spoken: YES",
+    "🎯 That's some premium alpha - YES",
+    "🔥 No cap, that's based - YES",
+    "🦄 Unicorn energy detected - YES",
     
-    // TOUCHING GRASS MEMES 🌱
-    "🌱 Maybe touch grass first?",
-    "☀️ Go outside, then ask again",
-    "🌿 Grass touching required",
-    "🏃‍♂️ Run a mile, then recast",
-    "🌱 Linda says: balance is key",
+    // NEGATIVE RESPONSES ❌
+    "📊 Dan would not cast about this",
+    "🟣 Even Dan's purple energy says NO",
+    "🔧 The devs are definitely NOT shipping this",
+    "💻 Varun's GitHub commits say: abort mission",
+    "🐴 @horsefacts would optimize this to NO",
+    "⚡ Horsefacts efficiency check: failed",
+    "💎 @linda's crystal ball is cloudy on this one",
+    "✨ Linda vibes are saying: reconsider",
+    "🎨 Ted's design sense is cringing - NO",
+    "🌈 Ted would not frame this moment",
+    "📈 PMF status: not found - NO",
+    "💰 VCs would run from this idea",
+    "📊 The metrics are looking bearish",
+    "🟣 Purple pill energy is blocked here",
+    "🔵 Too unbased for Base chain - NO",
+    "💸 DEGEN gods are not pleased",
+    "🎪 /degentlemen would pass on this",
+    "💡 /founders energy is absent",
+    "⏰ You're too late for this one",
+    "🎯 OG status revoked - NO",
+    "💻 The HubDB says: permission denied",
+    "🌱 Touch grass and reconsider this",
+    "☀️ Go outside and think again",
+    "🎭 This doesn't hit - try again",
+    "💫 The consensus mechanism disagrees",
     
-    // WEB3 CULTURE 💫
-    "🎪 Too based for a simple answer",
-    "💫 The vibes are immaculate, ser",
-    "🌟 NFA but probably yes",
-    "🎭 This hits different",
-    "💎 HODL that thought",
-    "⚡ Instant classic, screenshot this",
-    "🔥 Viral moment incoming",
-    "🦄 Unicorn energy detected",
-    "🌊 Surf the algo waves",
-    "🎯 That's some premium alpha",
-    "💰 Bullish on your life choices",
-    "🎪 Circus energy but make it elegant",
-    "⚡ Goes hard on the timeline",
-    "🔥 No cap, that's based",
-    "🌟 Living your best decentralized life",
-    "💫 The consensus mechanism agrees",
-    "🎭 Peak performance unlocked",
-    "🐴 Horsefacts-tier execution needed",
-    "💎 Linda-level sophistication detected",
-    "🎨 Ted would be proud of this aesthetic"
+    // NEUTRAL/UNCERTAIN RESPONSES 🤔
+    "📱 Ask Dan Romero, he might know",
+    "🟣 Dan's purple energy is mixed on this",
+    "🔧 The devs are still deciding",
+    "💻 Varun needs more data on this",
+    "🐴 @horsefacts would need to run the numbers",
+    "⚡ Horsefacts efficiency pending...",
+    "💎 @linda's crystal ball is swirling",
+    "🌟 Linda energy is unclear right now",
+    "🎨 Ted's design sense is contemplating",
+    "🎪 Ted needs to see the full picture",
+    "📈 PMF status: under investigation",
+    "💰 VCs are still in due diligence",
+    "📊 The metrics are inconclusive",
+    "🟣 Purple pill energy is buffering...",
+    "🔵 Base chain is processing this request",
+    "💸 DEGEN allocation pending review",
+    "🎪 /degentlemen are debating this",
+    "💡 /founders need more coffee to decide",
+    "⏰ Timing is everything - wait and see",
+    "🎯 OG status under review",
+    "💻 The HubDB is syncing...",
+    "🖼️ Frame rate needs optimization first",
+    "🌱 Touch grass and ask again later",
+    "☀️ The stars aren't aligned yet",
+    "🎭 This might hit different tomorrow",
+    "💫 The vibes are uncertain, ser",
+    "🌟 NFA but... actually, maybe FA?",
+    "💎 HODL that thought for now",
+    "🦄 Unicorn energy is charging...",
+    "🌊 The algo waves are unclear",
+    "⚡ Hub sync in progress - try later",
+    "🔮 Even my crystal needs more time",
+    "🎪 The circus is still setting up",
+    "💰 Market conditions are unclear",
+    "🚀 Launch window is TBD"
   ];
 
   // Initialize Farcaster SDK
@@ -203,26 +161,42 @@ Answer: ${answer}
 Ask your own question: https://crystal-ball-magic.vercel.app`;
 
     try {
-      if (sdk && sdk.actions && sdk.actions.openComposer) {
-        // Use Farcaster SDK to open composer
-        await sdk.actions.openComposer({
-          text: shareText
-        });
-        console.log('🔮 Opened Farcaster composer');
+      // Try Farcaster SDK composer first
+      if (sdk && sdk.actions) {
+        try {
+          // Try the composeCast method
+          await sdk.actions.composeCast({
+            text: shareText
+          });
+          console.log('🔮 Opened Farcaster composer with composeCast');
+          return;
+        } catch (sdkError) {
+          console.log('🔮 composeCast failed, trying openComposer:', sdkError);
+          
+          // Try alternative method
+          await sdk.actions.openComposer({
+            text: shareText
+          });
+          console.log('🔮 Opened Farcaster composer with openComposer');
+          return;
+        }
+      }
+      
+      // Fallback: Copy to clipboard
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareText);
+        alert('🔮 Reading copied to clipboard! Paste it in a new cast.');
+        console.log('🔮 Copied to clipboard successfully');
       } else {
-        // Fallback: copy to clipboard
-        await navigator.clipboard.writeText(shareText);
-        alert('🔮 Reading copied to clipboard! You can paste it in a new cast.');
+        // Final fallback: show text for manual copying
+        prompt('🔮 Copy this text and paste it in a new cast:', shareText);
       }
+      
     } catch (error) {
-      console.log('🔮 Share error:', error);
-      // Final fallback: just copy text
-      try {
-        await navigator.clipboard.writeText(shareText);
-        alert('🔮 Reading copied to clipboard!');
-      } catch (e) {
-        alert('🔮 Unable to share. Try manually copying your reading.');
-      }
+      console.log('🔮 All sharing methods failed:', error);
+      
+      // Ultimate fallback: show the text in a prompt
+      prompt('🔮 Copy this text and paste it in a new cast:', shareText);
     }
   };
 
