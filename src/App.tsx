@@ -164,20 +164,38 @@ Answer: ${answer}
 Ask your own question: https://crystal-ball-magic.vercel.app`;
 
     try {
-      await navigator.clipboard.writeText(shareText);
-      setShareStatus('✅ Copied! Paste in a new cast');
-      setTimeout(() => setShareStatus(''), 3000);
+      // First, try using the Farcaster SDK to open cast composer
+      if (_sdk && _sdk.actions && _sdk.actions.openUrl) {
+        const warpcastUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}`;
+        await _sdk.actions.openUrl(warpcastUrl);
+        setShareStatus('✨ Opening cast composer...');
+        setTimeout(() => setShareStatus(''), 3000);
+        return;
+      }
+
+      // Fallback: Open Warpcast composer in new window with pre-filled text
+      const warpcastUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}`;
+      const newWindow = window.open(warpcastUrl, '_blank', 'width=600,height=700,scrollbars=yes,resizable=yes');
+      
+      if (newWindow) {
+        setShareStatus('✨ Opening cast composer...');
+        setTimeout(() => setShareStatus(''), 3000);
+      } else {
+        // If popup was blocked, copy to clipboard as final fallback
+        await navigator.clipboard.writeText(shareText);
+        setShareStatus('✅ Copied! Paste in a new cast');
+        setTimeout(() => setShareStatus(''), 3000);
+      }
     } catch (error) {
-      // Fallback for when clipboard API isn't available
-      setShareStatus('📋 Copy this text to share your reading:');
-      // Create a temporary textarea to select the text
-      const textarea = document.createElement('textarea');
-      textarea.value = shareText;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      setTimeout(() => setShareStatus(''), 5000);
+      // Final fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(shareText);
+        setShareStatus('✅ Copied! Paste in a new cast');
+        setTimeout(() => setShareStatus(''), 3000);
+      } catch (clipboardError) {
+        setShareStatus('📋 Unable to auto-share. Try copying manually.');
+        setTimeout(() => setShareStatus(''), 5000);
+      }
     }
   };
 
@@ -345,7 +363,7 @@ Ask your own question: https://crystal-ball-magic.vercel.app`;
                   cursor: 'pointer'
                 }}
               >
-                📢 Share My Reading
+                🚀 Cast My Reading
               </button>
               
               <button
