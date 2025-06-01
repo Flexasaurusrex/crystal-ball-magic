@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,9 +6,7 @@
     <title>🔮 Magic Crystal Ball</title>
     
     <!-- Farcaster Mini App Meta Tags -->
-    <meta property="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/icon.png","splashBackgroundColor":"#4C1D95"}}}' />
-    <meta property="og:image" content="https://crystal-ball-magic.vercel.app/preview.png" />
-    <meta property="fc:frame:image" content="https://crystal-ball-magic.vercel.app/preview.png" />
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/splash.png","splashBackgroundColor":"#4C1D95"}}}' />
     
     <style>
         * {
@@ -164,57 +161,19 @@
             color: #A78BFA;
             font-style: italic;
         }
-
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .loading-screen.hidden {
-            display: none;
-        }
-
-        .spinner {
-            font-size: 4rem;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="spinner">🔮</div>
-        <h2>Loading your mystical experience...</h2>
-        <p>Connecting to the cosmic forces...</p>
-    </div>
-
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>🔮 Mystic Crystal Ball</h1>
             <p>Ask any question and discover your fate!</p>
         </div>
 
-        <!-- Crystal Ball -->
         <div class="crystal-ball" id="crystalBall" onclick="shakeCrystalBall()">
             🔮
         </div>
 
-        <!-- Question Input -->
         <input 
             type="text" 
             id="questionInput" 
@@ -223,31 +182,26 @@
             onkeypress="handleKeyPress(event)"
         >
 
-        <!-- Shake Button -->
         <button class="shake-button" id="shakeButton" onclick="shakeCrystalBall()">
             🔮 Shake the Crystal Ball
         </button>
 
-        <!-- Loading Message -->
         <div class="loading" id="loading">
             ✨ Consulting the spirits...
         </div>
 
-        <!-- Answer Display -->
         <div class="answer-container" id="answerContainer">
             <h3>The Crystal Ball Reveals:</h3>
             <p id="answer"></p>
         </div>
 
-        <!-- Instructions -->
         <div class="instructions">
             <p>💫 Type your question above and click the crystal ball!</p>
             <p>🌟 The mystical forces will guide your destiny</p>
         </div>
     </div>
 
-    <script type="module">
-        // Magic answers our crystal ball can give!
+    <script>
         const magicAnswers = [
             "✨ The stars say YES!",
             "🌙 Ask again when the moon is full...",
@@ -271,32 +225,7 @@
             "🎈 Let your dreams take flight!"
         ];
 
-        let isSDKLoaded = false;
-        let sdk = null;
-
-        // Initialize the Mini App
-        async function initMiniApp() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            
-            try {
-                // Try to import Farcaster SDK
-                const module = await import('https://unpkg.com/@farcaster/frame-sdk@0.1.0/dist/sdk.js');
-                sdk = module.sdk;
-                
-                // Signal that we're ready
-                await sdk.actions.ready();
-                console.log('🔮 Crystal Ball Mini App loaded with SDK!');
-                isSDKLoaded = true;
-            } catch (error) {
-                console.log('🔮 Running as standalone web app (not in Farcaster)');
-                // App still works as regular web page
-            }
-            
-            // Hide loading screen
-            loadingScreen.classList.add('hidden');
-        }
-
-        window.shakeCrystalBall = function() {
+        function shakeCrystalBall() {
             const questionInput = document.getElementById('questionInput');
             const question = questionInput.value.trim();
             
@@ -312,7 +241,6 @@
             const answerContainer = document.getElementById('answerContainer');
             const answerElement = document.getElementById('answer');
 
-            // Start shaking animation
             crystalBall.classList.add('shaking');
             crystalBall.innerHTML = '✨';
             shakeButton.disabled = true;
@@ -320,64 +248,28 @@
             loading.style.display = 'block';
             answerContainer.classList.remove('show');
 
-            // Shake for 2 seconds, then reveal answer
             setTimeout(() => {
-                // Stop shaking
                 crystalBall.classList.remove('shaking');
                 crystalBall.innerHTML = '🔮';
                 
-                // Get random answer
                 const randomAnswer = magicAnswers[Math.floor(Math.random() * magicAnswers.length)];
                 answerElement.textContent = randomAnswer;
                 
-                // Show answer with animation
                 answerContainer.classList.add('show');
                 loading.style.display = 'none';
                 
-                // Reset button
                 shakeButton.disabled = false;
                 shakeButton.textContent = '🔮 Ask Another Question';
                 
-                // Clear input for next question
                 questionInput.value = '';
             }, 2000);
         }
 
-        window.handleKeyPress = function(event) {
+        function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 shakeCrystalBall();
             }
         }
-
-        // Initialize when page loads
-        window.addEventListener('load', initMiniApp);
     </script>
 </body>
 </html>
-=======
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crystal Ball</title>
-    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashBackgroundColor":"#4C1D95"}}}' />
-</head>
-<body>
-    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#ff0000;color:white;display:flex;align-items:center;justify-content:center;font-size:40px;z-index:9999;font-family:Arial;">
-        <div style="text-align:center;">
-            <h1>🔮 IT WORKS!</h1>
-            <p>Mini App Success!</p>
-            <button onclick="alert('Button works!')" style="padding:20px;background:#7C3AED;border:none;border-radius:10px;color:white;font-size:20px;margin-top:20px;">Test Button</button>
-        </div>
-    </div>
-    
-    <script>
-        console.log('🎉 Red screen with preview test!');
-        
-        if (window.parent) {
-            window.parent.postMessage({type: 'frame_ready'}, '*');
-        }
-    </script>
-</body>
-</html>
->>>>>>> 020ccbaa3f5bad599362344eb7b591602375b7d1
