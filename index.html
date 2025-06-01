@@ -165,15 +165,18 @@
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
             <h1>🔮 Mystic Crystal Ball</h1>
             <p>Ask any question and discover your fate!</p>
         </div>
 
+        <!-- Crystal Ball -->
         <div class="crystal-ball" id="crystalBall" onclick="shakeCrystalBall()">
             🔮
         </div>
 
+        <!-- Question Input -->
         <input 
             type="text" 
             id="questionInput" 
@@ -182,19 +185,23 @@
             onkeypress="handleKeyPress(event)"
         >
 
+        <!-- Shake Button -->
         <button class="shake-button" id="shakeButton" onclick="shakeCrystalBall()">
             🔮 Shake the Crystal Ball
         </button>
 
+        <!-- Loading Message -->
         <div class="loading" id="loading">
             ✨ Consulting the spirits...
         </div>
 
+        <!-- Answer Display -->
         <div class="answer-container" id="answerContainer">
             <h3>The Crystal Ball Reveals:</h3>
             <p id="answer"></p>
         </div>
 
+        <!-- Instructions -->
         <div class="instructions">
             <p>💫 Type your question above and click the crystal ball!</p>
             <p>🌟 The mystical forces will guide your destiny</p>
@@ -202,6 +209,31 @@
     </div>
 
     <script>
+        // Import Farcaster SDK
+        let sdk;
+        
+        // Initialize SDK when available
+        async function initSDK() {
+            try {
+                // Import the SDK (in production, you'd install via npm)
+                const { default: FrameSDK } = await import('https://unpkg.com/@farcaster/frame-sdk@latest/dist/index.js');
+                sdk = new FrameSDK();
+                
+                // Add event listeners
+                sdk.on('primaryButtonClicked', () => {
+                    console.log('Primary button clicked');
+                });
+                
+                // Signal that the app is ready
+                sdk.actions.ready();
+                console.log('🔮 Farcaster SDK initialized and ready!');
+            } catch (error) {
+                console.log('🔮 Running without Farcaster SDK (standalone mode)');
+                // App still works without SDK for testing
+            }
+        }
+
+        // Magic answers our crystal ball can give!
         const magicAnswers = [
             "✨ The stars say YES!",
             "🌙 Ask again when the moon is full...",
@@ -241,6 +273,7 @@
             const answerContainer = document.getElementById('answerContainer');
             const answerElement = document.getElementById('answer');
 
+            // Start shaking animation
             crystalBall.classList.add('shaking');
             crystalBall.innerHTML = '✨';
             shakeButton.disabled = true;
@@ -248,20 +281,36 @@
             loading.style.display = 'block';
             answerContainer.classList.remove('show');
 
+            // Shake for 2 seconds, then reveal answer
             setTimeout(() => {
+                // Stop shaking
                 crystalBall.classList.remove('shaking');
                 crystalBall.innerHTML = '🔮';
                 
+                // Get random answer
                 const randomAnswer = magicAnswers[Math.floor(Math.random() * magicAnswers.length)];
                 answerElement.textContent = randomAnswer;
                 
+                // Show answer with animation
                 answerContainer.classList.add('show');
                 loading.style.display = 'none';
                 
+                // Reset button
                 shakeButton.disabled = false;
                 shakeButton.textContent = '🔮 Ask Another Question';
                 
+                // Clear input for next question
                 questionInput.value = '';
+                
+                // Analytics: Track successful predictions (if SDK available)
+                if (sdk) {
+                    try {
+                        // You could use sdk.actions.openUrl() or other actions here
+                        console.log('🔮 Prediction delivered via Farcaster Mini App!');
+                    } catch (error) {
+                        console.log('SDK action failed:', error);
+                    }
+                }
             }, 2000);
         }
 
@@ -270,6 +319,11 @@
                 shakeCrystalBall();
             }
         }
+
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            initSDK();
+        });
     </script>
 </body>
 </html>
