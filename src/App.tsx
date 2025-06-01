@@ -161,28 +161,9 @@ Answer: ${answer}
 Ask your own question: https://crystal-ball-magic.vercel.app`;
 
     try {
-      // Always copy to clipboard first
       await navigator.clipboard.writeText(shareText);
-      
-      // Then try to open composer with just the URL to trigger frame detection
-      if (sdk && sdk.actions) {
-        try {
-          // Open composer with minimal text to let frame detection work
-          await sdk.actions.composeCast({
-            text: `🔮 I got: ${answer}\n\nhttps://crystal-ball-magic.vercel.app`
-          });
-          console.log('🔮 Opened Farcaster composer');
-          return;
-        } catch (sdkError) {
-          console.log('🔮 SDK composer failed:', sdkError);
-        }
-      }
-      
-      // Fallback: Just notify about clipboard
-      alert('🔮 Reading copied to clipboard! Paste it in a new cast to see the frame embed.');
-      
+      alert('🔮 Reading copied! Paste it in a new cast and the beautiful frame will appear automatically.');
     } catch (error) {
-      console.log('🔮 Sharing failed:', error);
       prompt('🔮 Copy this text and paste it in a new cast:', shareText);
     }
   };
