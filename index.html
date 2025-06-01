@@ -209,7 +209,8 @@
             
             let sdk;
             try {
-                const { sdk: farcasterSdk } = await import('https://unpkg.com/@farcaster/frame-sdk@0.13.12/dist/index.js');
+                // Try loading from esm.sh CDN (recommended in Farcaster docs)
+                const { sdk: farcasterSdk } = await import('https://esm.sh/@farcaster/frame-sdk@latest');
                 sdk = farcasterSdk;
                 console.log('🔮 Farcaster SDK loaded successfully');
                 
@@ -217,7 +218,19 @@
                 await sdk.actions.ready();
                 console.log('🔮 Splash screen dismissed');
             } catch (error) {
-                console.log('🔮 Farcaster SDK not available (running outside Farcaster):', error);
+                console.log('🔮 SDK load failed, trying alternative method...', error);
+                
+                // Fallback: Try to call ready through postMessage if we're in an iframe
+                try {
+                    if (window.parent !== window) {
+                        window.parent.postMessage({ type: 'frame_ready' }, '*');
+                        console.log('🔮 Sent frame_ready message to parent');
+                    }
+                } catch (e) {
+                    console.log('🔮 PostMessage fallback failed:', e);
+                }
+                
+                console.log('🔮 Running in standalone mode or SDK unavailable');
             }
             
             console.log('🔮 Crystal Ball Mini App ready!');
