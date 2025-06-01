@@ -217,12 +217,12 @@
 <body>
     <div class="app-container">
         <div class="header">
-            <h1>🔮 Mystic Crystal Ball</h1>
+            <h1>Mystic Crystal Ball</h1>
             <p>Ask any question and discover your fate!</p>
         </div>
 
         <div class="crystal-ball" id="crystalBall">
-            🔮
+            ⚫
         </div>
 
         <div class="input-container">
@@ -236,11 +236,11 @@
         </div>
 
         <button class="shake-button" id="shakeButton">
-            🔮 Shake the Crystal Ball
+            Shake the Crystal Ball
         </button>
 
         <div class="loading" id="loading">
-            ✨ Consulting the spirits...
+            Consulting the spirits...
         </div>
 
         <div class="answer-container" id="answerContainer">
@@ -249,41 +249,41 @@
         </div>
 
         <div class="instructions">
-            <p>💫 Type your question above and click the crystal ball!</p>
-            <p>🌟 The mystical forces will guide your destiny</p>
+            <p>Type your question above and click the crystal ball!</p>
+            <p>The mystical forces will guide your destiny</p>
         </div>
     </div>
 
     <script>
-        console.log('🔮 Crystal Ball starting...');
+        console.log('Crystal Ball starting...');
 
         // Magic answers our crystal ball can give!
         const magicAnswers = [
-            "✨ The stars say YES!",
-            "🌙 Ask again when the moon is full...",
-            "🔮 My crystal is cloudy, try later",
-            "⭐ Absolutely! The universe agrees!",
-            "🌟 Signs point to YES!",
-            "💫 Don't count on it...",
-            "🎭 Reply hazy, try again",
-            "🌈 Outlook good!",
-            "🎪 Very doubtful...",
-            "🎨 Without a doubt!",
-            "🎭 My sources say no",
-            "🌺 You may rely on it",
-            "🦄 Better not tell you now",
-            "🎪 Cannot predict now",
-            "🌸 Concentrate and ask again",
-            "🔥 All signs point to YES!",
-            "🌊 The tide will turn in your favor",
-            "⚡ Electric possibilities ahead!",
-            "🌺 Bloom where you are planted",
-            "🎈 Let your dreams take flight!",
-            "🌙 The moon whispers: maybe...",
-            "⭐ Fortune favors the bold!",
-            "🌟 Your destiny awaits!",
-            "💫 The cosmos smile upon you",
-            "🔮 Crystal clear: YES!"
+            "The stars say YES!",
+            "Ask again when the moon is full...",
+            "My crystal is cloudy, try later",
+            "Absolutely! The universe agrees!",
+            "Signs point to YES!",
+            "Don't count on it...",
+            "Reply hazy, try again",
+            "Outlook good!",
+            "Very doubtful...",
+            "Without a doubt!",
+            "My sources say no",
+            "You may rely on it",
+            "Better not tell you now",
+            "Cannot predict now",
+            "Concentrate and ask again",
+            "All signs point to YES!",
+            "The tide will turn in your favor",
+            "Electric possibilities ahead!",
+            "Bloom where you are planted",
+            "Let your dreams take flight!",
+            "The moon whispers: maybe...",
+            "Fortune favors the bold!",
+            "Your destiny awaits!",
+            "The cosmos smile upon you",
+            "Crystal clear: YES!"
         ];
 
         let isInFarcaster = false;
@@ -295,22 +295,22 @@
                                userAgent.includes('farcaster') ||
                                window.parent !== window;
                 
-                console.log('🔮 Environment - Farcaster:', isInFarcaster);
-                console.log('🔮 User Agent:', userAgent);
+                console.log('Environment - Farcaster:', isInFarcaster);
+                console.log('User Agent:', userAgent);
             } catch (error) {
-                console.log('🔮 Environment detection error:', error);
+                console.log('Environment detection error:', error);
             }
         }
 
         function shakeCrystalBall() {
-            console.log('🔮 Shake button clicked');
+            console.log('Shake button clicked');
             
             const questionInput = document.getElementById('questionInput');
             const question = questionInput.value.trim();
             
             if (!question) {
                 questionInput.focus();
-                questionInput.placeholder = "✨ Please ask a question first!";
+                questionInput.placeholder = "Please ask a question first!";
                 setTimeout(() => {
                     questionInput.placeholder = "What do you wish to know?";
                 }, 2000);
@@ -325,16 +325,16 @@
 
             // Start animation
             crystalBall.classList.add('shaking');
-            crystalBall.textContent = '✨';
+            crystalBall.textContent = '●';
             shakeButton.disabled = true;
-            shakeButton.textContent = '✨ Consulting the spirits...';
+            shakeButton.textContent = 'Consulting the spirits...';
             loading.style.display = 'block';
             answerContainer.classList.remove('show');
 
             // Show answer after 2 seconds
             setTimeout(() => {
                 crystalBall.classList.remove('shaking');
-                crystalBall.textContent = '🔮';
+                crystalBall.textContent = '⚫';
                 
                 const randomAnswer = magicAnswers[Math.floor(Math.random() * magicAnswers.length)];
                 answerElement.textContent = randomAnswer;
@@ -343,12 +343,12 @@
                 loading.style.display = 'none';
                 
                 shakeButton.disabled = false;
-                shakeButton.textContent = '🔮 Ask Another Question';
+                shakeButton.textContent = 'Ask Another Question';
                 
                 questionInput.value = '';
                 questionInput.placeholder = "What else would you like to know?";
 
-                console.log('🔮 Answer revealed:', randomAnswer);
+                console.log('Crystal Ball answer:', randomAnswer);
             }, 2000);
         }
 
@@ -361,7 +361,7 @@
 
         // Initialize app
         function initApp() {
-            console.log('🔮 Initializing app...');
+            console.log('Initializing app...');
             
             detectEnvironment();
             
@@ -372,20 +372,20 @@
             
             if (crystalBall) {
                 crystalBall.addEventListener('click', shakeCrystalBall);
-                console.log('🔮 Crystal ball click listener added');
+                console.log('Crystal ball click listener added');
             }
             
             if (shakeButton) {
                 shakeButton.addEventListener('click', shakeCrystalBall);
-                console.log('🔮 Shake button click listener added');
+                console.log('Shake button click listener added');
             }
             
             if (questionInput) {
                 questionInput.addEventListener('keypress', handleKeyPress);
-                console.log('🔮 Input keypress listener added');
+                console.log('Input keypress listener added');
             }
             
-            console.log('🔮 App initialized successfully!');
+            console.log('App initialized successfully!');
         }
 
         // Start when DOM is ready
@@ -395,7 +395,7 @@
             initApp();
         }
 
-        console.log('🔮 Script loaded');
+        console.log('Script loaded');
     </script>
 </body>
 </html>
