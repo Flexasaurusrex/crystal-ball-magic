@@ -170,13 +170,9 @@ Question: "${currentQuestion}"
 Answer: ${answer}
 
 Ask your own question:
-https://crystal-ball-magic.vercel.app
+https://crystal-ball-magic-flexasaurusrexs-projects.vercel.app
 
-${randomTagline}
-
-
-
-`;
+${randomTagline}`;
 
     try {
       // First, try using the Farcaster SDK to open cast composer
@@ -198,15 +194,15 @@ ${randomTagline}
       } else {
         // If popup was blocked, copy to clipboard as final fallback
         await navigator.clipboard.writeText(shareText);
-        setShareStatus('✅ Copied! Paste in a new cast');
-        setTimeout(() => setShareStatus(''), 3000);
+        setShareStatus('✅ Copied! Paste in cast & hit ENTER to show frame');
+        setTimeout(() => setShareStatus(''), 5000);
       }
     } catch (error) {
       // Final fallback: copy to clipboard
       try {
         await navigator.clipboard.writeText(shareText);
-        setShareStatus('✅ Copied! Paste in a new cast');
-        setTimeout(() => setShareStatus(''), 3000);
+        setShareStatus('✅ Copied! Paste in cast & hit ENTER to show frame');
+        setTimeout(() => setShareStatus(''), 5000);
       } catch (clipboardError) {
         setShareStatus('📋 Unable to auto-share. Try copying manually.');
         setTimeout(() => setShareStatus(''), 5000);
