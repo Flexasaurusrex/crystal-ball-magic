@@ -6,7 +6,7 @@ const App = () => {
   const [answer, setAnswer] = useState('');
   const [isShaking, setIsShaking] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [sdk, setSdk] = useState<any>(null);
+  const [_sdk, setSdk] = useState<any>(null); // Prefixed with _ to indicate intentionally unused
 
   const magicAnswers = [
     // POSITIVE RESPONSES ✅
