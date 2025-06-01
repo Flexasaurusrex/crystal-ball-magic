@@ -8,23 +8,6 @@
     <!-- Farcaster Mini App Meta Tags -->
     <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/splash.png","splashBackgroundColor":"#4C1D95"}}}' />
     
-    <!-- Load Farcaster SDK as Module -->
-    <script type="module">
-      import { default as FrameSDK } from 'https://unpkg.com/@farcaster/frame-sdk@latest/dist/index.js';
-      
-      window.FrameSDK = FrameSDK;
-      
-      // Initialize immediately
-      try {
-        const sdk = new FrameSDK();
-        await sdk.actions.ready();
-        console.log('🔮 SDK loaded and ready!');
-        window.farcasterSDK = sdk;
-      } catch (error) {
-        console.log('🔮 SDK initialization failed:', error);
-      }
-    </script>
-    
     <style>
         * {
             margin: 0;
@@ -219,6 +202,24 @@
     </div>
 
     <script>
+        // Simple Farcaster Mini App ready signal
+        function notifyFarcasterReady() {
+            try {
+                // Standard Mini App ready signal
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'frame_ready'
+                    }, '*');
+                    
+                    window.parent.postMessage({
+                        type: 'ready'
+                    }, '*');
+                }
+            } catch (e) {
+                console.log('Ready signal failed:', e);
+            }
+        }
+
         // Magic answers our crystal ball can give!
         const magicAnswers = [
             "✨ The stars say YES!",
@@ -299,7 +300,13 @@
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🔮 Crystal Ball Mini App loaded!');
+            notifyFarcasterReady();
         });
+
+        // Try ready signal multiple times
+        setTimeout(notifyFarcasterReady, 100);
+        setTimeout(notifyFarcasterReady, 500);
+        setTimeout(notifyFarcasterReady, 1000);
     </script>
 </body>
 </html>
