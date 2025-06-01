@@ -156,13 +156,23 @@ const App = () => {
   };
 
   const shareReading = async () => {
+    const taglines = [
+      "✨ Discover your destiny with the mystical forces of Farcaster! 🔮",
+      "🌟 The crystal ball knows all... what will it reveal to you? 💎",
+      "🔮 Join the mystical journey - your fate awaits! ✨"
+    ];
+    
+    const randomTagline = taglines[Math.floor(Math.random() * taglines.length)];
+    
     const shareText = `🔮 I consulted the Mystic Crystal Ball!
 
 Question: "${currentQuestion}"
 Answer: ${answer}
 
 Ask your own question:
-https://crystal-ball-magic.vercel.app`;
+https://crystal-ball-magic.vercel.app
+
+${randomTagline}`;
 
     try {
       // First, try using the Farcaster SDK to open cast composer
