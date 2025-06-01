@@ -8,6 +8,9 @@
     <!-- Farcaster Mini App Meta Tags -->
     <meta name="fc:frame" content='{"version":"next","imageUrl":"https://crystal-ball-magic.vercel.app/preview.png","button":{"title":"🔮 Ask the Crystal Ball","action":{"type":"launch_frame","name":"Magic Crystal Ball","url":"https://crystal-ball-magic.vercel.app/","splashImageUrl":"https://crystal-ball-magic.vercel.app/splash.png","splashBackgroundColor":"#4C1D95"}}}' />
     
+    <!-- Load Farcaster SDK -->
+    <script src="https://unpkg.com/@farcaster/frame-sdk@0.13.12/dist/index.umd.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -202,30 +205,6 @@
     </div>
 
     <script>
-        // Correct Farcaster Mini App ready signals
-        function notifyFarcasterReady() {
-            try {
-                if (window.parent && window.parent !== window) {
-                    // Try multiple ready signal formats
-                    const signals = [
-                        { type: 'fc_frame_ready' },
-                        { type: 'frameReady' },
-                        { type: 'sdk_ready' },
-                        { type: 'frame_ready' },
-                        { type: 'miniapp_ready' }
-                    ];
-                    
-                    signals.forEach(signal => {
-                        window.parent.postMessage(signal, '*');
-                    });
-                    
-                    console.log('🔮 Sent all ready signals to Farcaster');
-                }
-            } catch (e) {
-                console.log('Ready signal failed:', e);
-            }
-        }
-
         // Magic answers our crystal ball can give!
         const magicAnswers = [
             "✨ The stars say YES!",
@@ -249,6 +228,42 @@
             "🌺 Bloom where you are planted",
             "🎈 Let your dreams take flight!"
         ];
+
+        // SDK initialization
+        let sdk = null;
+
+        function initializeSDK() {
+            try {
+                // Load SDK from global window (if available)
+                if (window.FrameSDK) {
+                    sdk = new window.FrameSDK();
+                    sdk.actions.ready().then(() => {
+                        console.log('🔮 SDK ready!');
+                        
+                        // Prompt user to add the mini app
+                        promptToAddMiniApp();
+                    });
+                } else {
+                    console.log('🔮 FrameSDK not available');
+                }
+            } catch (error) {
+                console.log('🔮 SDK error:', error);
+            }
+        }
+
+        // NEW FUNCTION: Prompt user to add mini app
+        function promptToAddMiniApp() {
+            if (sdk) {
+                sdk.actions.addFrame().then((result) => {
+                    console.log('🔮 Add frame result:', result);
+                    if (result.added) {
+                        console.log('🔮 Mini app was added successfully!');
+                    }
+                }).catch((error) => {
+                    console.log('🔮 Add frame failed:', error);
+                });
+            }
+        }
 
         function shakeCrystalBall() {
             const questionInput = document.getElementById('questionInput');
@@ -294,6 +309,14 @@
                 
                 // Clear input for next question
                 questionInput.value = '';
+
+                // Try to add mini app after first use
+                if (sdk && !window.miniAppPrompted) {
+                    window.miniAppPrompted = true;
+                    setTimeout(() => {
+                        promptToAddMiniApp();
+                    }, 1000);
+                }
             }, 2000);
         }
 
@@ -303,18 +326,11 @@
             }
         }
 
-        // Initialize immediately and repeatedly
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🔮 Crystal Ball Mini App loaded!');
-            notifyFarcasterReady();
+            setTimeout(initializeSDK, 100);
         });
-
-        // Aggressive ready signaling 
-        setTimeout(notifyFarcasterReady, 0);
-        setTimeout(notifyFarcasterReady, 100);
-        setTimeout(notifyFarcasterReady, 500);
-        setTimeout(notifyFarcasterReady, 1000);
-        setTimeout(notifyFarcasterReady, 2000);
     </script>
 </body>
 </html>
